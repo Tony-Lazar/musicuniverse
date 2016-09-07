@@ -1,0 +1,38 @@
+footer {
+    height: 100px;
+    font-family: "Rakoon Personal Use";
+    font-size: 25px;
+}
+
+footer .main-footer {
+    background-color: #026468;
+    margin: 0 auto;
+}
+
+footer ul {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+footer ul li {
+    display: inline-block;
+    width: 24%;
+    border-right: 1px solid #333;
+    text-align: center;
+    line-height: 100px;
+}
+
+footer ul li:last-child {
+    border: none;
+}
+
+footer ul li a {
+    color: #00f6ff;
+    text-decoration: none;
+    text-shadow: 1px 1px 3px #000;
+}
+
+footer ul li a:hover {
+    color: #06d4db;
+}
