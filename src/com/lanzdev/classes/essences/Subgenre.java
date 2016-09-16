@@ -4,19 +4,25 @@ import com.lanzdev.utils.Converter;
 
 public class Subgenre implements Nameable{
     private int id;
+    private int parent;
     private String name;
     private String history = "No history";
 
-    public Subgenre(int id, String name, String history) {
+    public Subgenre(int id, int parent, String name, String history) {
         this.id = id;
+        this.parent = parent;
         this.name = name;
-        if (history != null && history != "")
+        if (history != null && !history.equals(""))
             this.history = history;
 
     }
 
     public int getId( ) {
         return id;
+    }
+
+    public int getParent( ) {
+        return parent;
     }
 
     @Override

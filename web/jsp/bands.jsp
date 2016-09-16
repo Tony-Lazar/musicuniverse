@@ -1,4 +1,5 @@
 <%@ page import="com.lanzdev.classes.DB" %>
+<%@ page import="com.lanzdev.classes.essences.Band" %>
 <%@ page import="com.lanzdev.classes.essences.Nameable" %>
 <%@ page import="java.util.HashSet" %><%--
   Created by IntelliJ IDEA.
@@ -28,8 +29,8 @@
             <ul>
                 <%
                     DB db = DB.getDB();
-                    HashSet<Nameable> bands = db.getBandsBySubgenre(request.getParameter("subgenre"));
-                    for (Nameable band : bands) {
+                    HashSet<Band> bands = db.getBandsBySubgenre(request.getParameter("subgenre"));
+                    for (Band band : bands) {
                 %>
                 <li>
                     <form action="/albums" method="post">

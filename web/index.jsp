@@ -1,4 +1,5 @@
 <%@ page import="com.lanzdev.classes.DB" %>
+<%@ page import="com.lanzdev.classes.essences.Genre" %>
 <%@ page import="com.lanzdev.classes.essences.Nameable" %>
 <%@ page import="java.util.HashSet" %>
 <%--
@@ -36,8 +37,8 @@
             <ul>
                 <%
                     DB db = DB.getDB();
-                    HashSet<Nameable> genres = db.getGenresAsNameable();
-                    for (Nameable genre : genres) {
+                    HashSet<Genre> genres = db.getGenres();
+                    for (Genre genre : genres) {
                 %>
                 <li>
                     <form action="/subgenres" method="post">

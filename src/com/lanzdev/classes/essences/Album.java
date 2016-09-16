@@ -7,16 +7,18 @@ public class Album implements Nameable {
     private String url;
     private String history;
     private String imagePath;
+    private int band;
 
-    public Album(int id, String name, int year, String url, String history, String imagePath) {
+    public Album(int id, String name, int year, String url, String history, String imagePath, int band) {
         this.id = id;
         this.name = name;
         this.year = year;
         this.url = url;
-        if (history != " " && history != null) {
+        if (history != null && !history.equals("")) {
             this.history = history;
         }
         this.imagePath = imagePath;
+        this.band = band;
     }
 
     public int getId( ) {
@@ -42,5 +44,9 @@ public class Album implements Nameable {
 
     public String getImagePath( ) {
         return imagePath;
+    }
+
+    public int getBand( ) {
+        return band;
     }
 }
