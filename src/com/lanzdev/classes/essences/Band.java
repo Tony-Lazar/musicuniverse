@@ -3,13 +3,19 @@ package com.lanzdev.classes.essences;
 import com.lanzdev.utils.Converter;
 
 public class Band implements Nameable{
-    String name;
-    String history = "No history";
+    private int id;
+    private String name;
+    private String history = "No history";
 
-    public Band(String name, String history) {
+    public Band(int id, String name, String history) {
+        this.id = id;
         this.name = name;
         if (history != " "&& history != null)
             this.history = history;
+    }
+
+    public int getId( ) {
+        return id;
     }
 
     @Override

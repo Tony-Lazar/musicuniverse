@@ -1,8 +1,7 @@
 <%@ page import="com.lanzdev.classes.DB" %>
-<%@ page import="com.lanzdev.classes.essences.Genre" %>
+<%@ page import="com.lanzdev.classes.essences.Nameable" %>
 <%@ page import="java.util.HashSet" %>
-<%@ page import="static javafx.scene.input.KeyCode.L" %>
-<%@ page import="com.lanzdev.classes.essences.Nameable" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Tony
   Date: 05.09.2016
@@ -14,31 +13,53 @@
 <head>
     <title>Music Universe</title>
     <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+    <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        })
+    </script>
 </head>
 <body>
 
 
 <div class="container">
-    <h1>Main Genres</h1>
 
-    <div class="main-col">
-        <ul>
-            <%
-                DB db = DB.getDB();
-                HashSet<Nameable> genres = db.getGenres();
-                for (Nameable genre : genres) {
-            %>
-            <li>
-                <form action="/subgenre" method="post">
-                    <input title="<%=genre.getName()%>" type="submit" name="genre" value="<%=genre.getName()%>"  >
-                </form>
-            </li>
-            <%
-                }
-            %>
-        </ul>
+    <div class="navbar"></div>
+
+    <div class="content">
+
+        <h1>Main Genres</h1>
+
+        <div class="main-col">
+            <ul>
+                <%
+                    DB db = DB.getDB();
+                    HashSet<Nameable> genres = db.getGenresAsNameable();
+                    for (Nameable genre : genres) {
+                %>
+                <li>
+                    <form action="/subgenres" method="post">
+                        <input title="<%=genre.getName()%>" type="submit" name="genre" value="<%=genre.getName()%>">
+                    </form>
+                </li>
+                <%
+                    }
+                %>
+            </ul>
+        </div>
+
     </div>
+
+
 </div>
 
+
+<script>
+    $(document).ready(function () {
+        $('.container .navbar').load('/jsp/secondary/navbar.jsp .menu');
+    });
+</script>
 </body>
 </html>

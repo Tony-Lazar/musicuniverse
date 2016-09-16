@@ -1,23 +1,35 @@
 package com.lanzdev.classes.essences;
 
-public class Subgenre implements Nameable{
-    private Genre genre;
+import com.lanzdev.utils.Converter;
 
-    public Subgenre(String name, String history) {
-        genre = new Genre(name, history);
+public class Subgenre implements Nameable{
+    private int id;
+    private String name;
+    private String history = "No history";
+
+    public Subgenre(int id, String name, String history) {
+        this.id = id;
+        this.name = name;
+        if (history != null && history != "")
+            this.history = history;
+
+    }
+
+    public int getId( ) {
+        return id;
     }
 
     @Override
     public String getName() {
-        return genre.getName();
+        return Converter.convertName(name);
     }
 
     public String getHistory() {
-        return genre.getHistory();
+        return history;
     }
 
     @Override
     public String toString( ) {
-        return genre.getName() + "; " + genre.getHistory();
+        return id + "; " + name + "; " + history;
     }
 }

@@ -12,31 +12,43 @@
 <head>
     <title>Music Universe</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script type="text/javascript" src="../js/jquery-3.1.0.js"></script>
 </head>
 <body>
 
 <div class="container">
-    <h1>Bands from <%=request.getParameter("subgenre")%>
-    </h1>
 
-    <div class="main-col">
-        <ul>
-            <%
-                DB db = DB.getDB();
-                HashSet<Nameable> bands = db.getBands(request.getParameter("subgenre"));
-                for (Nameable band : bands) {
-            %>
-            <li>
-                <form action="" method="post">
-                    <input title="<%=band.getName()%>" type="submit" name="band" value="<%=band.getName()%>">
-                </form>
-            </li>
-            <%
-                }
-            %>
-        </ul>
+    <div class="navbar"></div>
+
+    <div class="content">
+
+        <h1>Bands from <%=request.getParameter("subgenre")%></h1>
+
+        <div class="main-col">
+            <ul>
+                <%
+                    DB db = DB.getDB();
+                    HashSet<Nameable> bands = db.getBandsBySubgenre(request.getParameter("subgenre"));
+                    for (Nameable band : bands) {
+                %>
+                <li>
+                    <form action="/albums" method="post">
+                        <input title="<%=band.getName()%>" type="submit" name="band" value="<%=band.getName()%>">
+                    </form>
+                </li>
+                <%
+                    }
+                %>
+            </ul>
+        </div>
     </div>
+
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('.container .navbar').load('/jsp/secondary/navbar.jsp .menu');
+    });
+</script>
 </body>
 </html>

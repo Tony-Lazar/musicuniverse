@@ -1,37 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+
+    <!--MAIN PART-->
+
+
     <servlet>
-        <servlet-name>subgenre</servlet-name>
-        <servlet-class>com.lanzdev.servlets.OpenSubgenres</servlet-class>
+        <servlet-name>openGenres</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenGenres</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>subgenre</servlet-name>
-        <url-pattern>/subgenre
-        </url-pattern>
+        <servlet-name>openGenres</servlet-name>
+        <url-pattern>/genres</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>band</servlet-name>
-        <servlet-class>com.lanzdev.servlets.OpenBands</servlet-class>
+        <servlet-name>openSubgenres</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenSubgenres</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>band</servlet-name>
-        <url-pattern>/band</url-pattern>
+        <servlet-name>openSubgenres</servlet-name>
+        <url-pattern>/subgenres</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>album</servlet-name>
-        <servlet-class>com.lanzdev.servlets.OpenAlbums</servlet-class>
+        <servlet-name>openBands</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenBands</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>album</servlet-name>
-        <url-pattern>/album</url-pattern>
+        <servlet-name>openBands</servlet-name>
+        <url-pattern>/bands</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openAlbums</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenAlbums</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openAlbums</servlet-name>
+        <url-pattern>/albums</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openArticles</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenArticles</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openArticles</servlet-name>
+        <url-pattern>/articles</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openArticle</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.main.OpenArticle</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openArticle</servlet-name>
+        <url-pattern>/article</url-pattern>
+    </servlet-mapping>
+
+
+    <!--ADMIN PART-->
+
+    <servlet>
+        <servlet-name>admin</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.Admin</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>admin</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openGenresPanel</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.main.GenresPanel</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openGenresPanel</servlet-name>
+        <url-pattern>/genresPanel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openSubgenresPanel</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.main.SubgenresPanel</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openSubgenresPanel</servlet-name>
+        <url-pattern>/subgenresPanel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openBandsPanel</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.main.BandsPanel</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openBandsPanel</servlet-name>
+        <url-pattern>/bandsPanel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openAlbumsPanel</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.main.AlbumsPanel</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openAlbumsPanel</servlet-name>
+        <url-pattern>/albumsPanel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>openArticlesPanel</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.main.ArticlesPanel</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>openArticlesPanel</servlet-name>
+        <url-pattern>/articlesPanel</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>createArticle</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.creation.CreateArticle</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>createArticle</servlet-name>
+        <url-pattern>/createArticle</url-pattern>
+    </servlet-mapping>
+
+    <!--ACTIONS-->
+
+    <!--ADDITION-->
+
+    <servlet>
+        <servlet-name>addArticle</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.addition.AddArticle</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addArticle</servlet-name>
+        <url-pattern>/addArticle</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>editArticle</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.editing.EditArticle</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>editArticle</servlet-name>
+        <url-pattern>/editArticle</url-pattern>
+    </servlet-mapping>
+
+    <!--UPDATE-->
+
+    <servlet>
+        <servlet-name>updateArticle</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.update.UpdateArticle</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>updateArticle</servlet-name>
+        <url-pattern>/updateArticle</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>updateGenre</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.update.UpdateGenre</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>updateGenre</servlet-name>
+        <url-pattern>/updateGenre</url-pattern>
+    </servlet-mapping>
+
 </web-app>

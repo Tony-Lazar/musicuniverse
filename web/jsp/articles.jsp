@@ -1,11 +1,12 @@
 <%@ page import="com.lanzdev.classes.DB" %>
-<%@ page import="com.lanzdev.classes.essences.Album" %>
+<%@ page import="com.lanzdev.classes.essences.Article" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
 <%--
   Created by IntelliJ IDEA.
   User: Tony
-  Date: 07.09.2016
-  Time: 21:17
+  Date: 12.09.2016
+  Time: 21:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,6 +17,7 @@
     <script type="text/javascript" src="../js/jquery-3.1.0.js"></script>
 </head>
 <body>
+</h1>
 
 <div class="container">
 
@@ -23,23 +25,19 @@
 
     <div class="content">
 
-        <h1>Albums from <%=request.getParameter("band")%></h1>
+        <h1>Articles</h1>
 
         <div class="main-col">
-            <ul>
+            <ul class="articles-list">
                 <%
                     DB db = DB.getDB();
-                    HashSet<Album> albums = db.getAlbumsByBand(request.getParameter("band"));
-                    for (Album album : albums) {
+                    HashSet<Article> articles = db.getArticles();
+                    for (Article article : articles) {
                 %>
                 <li>
-                    <form action="<%=album.getUrl()%>" method="post" target="_blank">
-                        <input style="
-                                background:url(<%=album.getImagePath()%>) no-repeat;
-                                background-size: cover;"
-                               title="<%=album.getName()%> (<%=album.getYear()%>)"
-                               type="submit" name="album" value="<%=album.getName()%>"
-                               class="album">
+                    <form method="post" action="/article">
+                        <input type="text" name="id" value="<%=article.getId()%>" hidden>
+                        <input type="submit" value="<%=article.getTitle()%>">
                     </form>
                 </li>
                 <%
@@ -47,8 +45,8 @@
                 %>
             </ul>
         </div>
-    </div>
 
+    </div>
 
 </div>
 

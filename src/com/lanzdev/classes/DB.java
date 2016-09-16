@@ -1,30 +1,22 @@
 package com.lanzdev.classes;
 
-import com.lanzdev.classes.essences.Genre;
-import com.lanzdev.classes.essences.Nameable;
-import com.lanzdev.classes.essences.Subgenre;
+import com.lanzdev.classes.essences.*;
 
 import java.sql.*;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class DB {
-    private static final String URL      = "jdbc:mysql://localhost:3306/music";
+    //    private static final String URL      = "jdbc:mysql://mysql302.1gb.ua/gbua_mcunivers";
+    private static final String URL      = "jdbc:mysql://localhost:3306/gbua_mcunivers";
+    //    private static final String LOGIN    = "gbua_mcunivers";
     private static final String LOGIN    = "root";
+    //    private static final String PASSWORD = "df5f96daf0";
     private static final String PASSWORD = "Equilibrium20!4";
     private static       DB     db       = null;
-    private Connection connection;
-    private Statement  statement;
 
     private DB( ) {
         try {
             Class.forName("org.gjt.mm.mysql.Driver").newInstance();
-            connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-            System.out.println("connected successfully");
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("some troubles");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -37,93 +29,599 @@ public class DB {
     public static DB getDB( ) {
         if (db == null)
             db = new DB();
+
         return db;
     }
 
-    public HashSet<Nameable> getGenres( ) {
-        HashSet<Nameable> genres  = new HashSet<>();
-        String         request = "select * from music.genres";
-        ResultSet      resSet  = getResultSet(request);
+    /*GETTERS*/
+
+    public HashSet<Nameable> getGenresAsNameable( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
+
+        HashSet<Nameable> genres  = new HashSet<Nameable>();
+        String            request = "select * from gbua_mcunivers.genres";
 
         try {
-            while (resSet.next()) {
-                genres.add(new Genre(resSet.getString("name"), resSet.getString("history")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return genres;
-    }
-
-    public HashSet<Nameable> getSubgenres(String genre) {
-        {
-            genre = genre.toLowerCase();
-            HashSet<Nameable> genres  = new HashSet<>();
-            String            request = "select * from music.subgenres where parent = (select id from music.genres where name = '" + genre + "')";
-            ResultSet         resSet  = getResultSet(request);
-
-            if (resSet == null)
-                return null;
-
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
             try {
-                while (resSet.next()) {
-                    genres.add(new Subgenre(resSet.getString("name"), resSet.getString("history")));
+                while (rs.next()) {
+                    genres.add(new Genre(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-            return genres;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        return genres;
     }
 
-    public HashSet<Nameable> getBands(String genre) {
+    public HashSet<Nameable> getSubgenresByGenre(String genre) {
+        Connection        con  = null;
+        PreparedStatement stmt = null;
+        ResultSet         rs   = null;
+
         genre = genre.toLowerCase();
-        HashSet<Nameable> bands = new HashSet<>();
-        String request = "select * from music.bands where id in (" +
-                         "select band_id from music.bands_genres where subgenre_id in(" +
-                         "select id from music.subgenres where name = '" + genre + "'))";
-        ResultSet resSet = getResultSet(request);
+        HashSet<Nameable> genres  = new HashSet<Nameable>();
+        String            request = "select * from gbua_mcunivers.subgenres where parent = (select id from gbua_mcunivers.genres where name = ?)";
 
         try {
-            while (resSet.next()) {
-                bands.add(new Subgenre(resSet.getString("name"), resSet.getString("history")));
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, genre);
+            rs = stmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    genres.add(new Subgenre(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return genres;
+
+    }
+
+    public HashSet<Nameable> getBandsBySubgenre(String subgenre) {
+        Connection        con  = null;
+        PreparedStatement stmt = null;
+        ResultSet         rs   = null;
+
+        subgenre = subgenre.toLowerCase();
+        HashSet<Nameable> bands = new HashSet<Nameable>();
+        String request = "select * from gbua_mcunivers.bands where id in (" +
+                "select band_id from gbua_mcunivers.bands_genres where subgenre_id in(" +
+                "select id from gbua_mcunivers.subgenres where name = ?))";
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, subgenre);
+            rs = stmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    bands.add(new Band(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return bands;
     }
 
-    public HashSet<Nameable> getAlbums(String band) {
-        band = band.toLowerCase();
-        HashSet<Nameable> albums = new HashSet<>();
-        String request = "select * from music.albums where band = (" +
-                "select id from music.bands where name = '" + band + "')";
-        ResultSet resSet = getResultSet(request);
+    public HashSet<Album> getAlbumsByBand(String band) {
+        Connection        con  = null;
+        PreparedStatement stmt = null;
+        ResultSet         rs   = null;
 
+        band = band.toLowerCase();
+        HashSet<Album> albums = new HashSet<Album>();
+        String request = "select * from gbua_mcunivers.albums where band = (" +
+                "select id from gbua_mcunivers.bands where name = ?)";
 
         try {
-            while (resSet.next()) {
-                albums.add(new Subgenre(resSet.getString("name"), resSet.getString("history")));
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, band);
+            rs = stmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    albums.add(new Album(rs.getInt("id"), rs.getString("name"), rs.getInt("year"),
+                            rs.getString("url"), rs.getString("history"), rs.getString("image_path")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return albums;
     }
 
-    private ResultSet getResultSet(String request) {
-        ResultSet resSet = null;
+
+    public HashSet<Genre> getGenres( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
+
+        HashSet<Genre> genres  = new HashSet<Genre>();
+        String         request = "select * from gbua_mcunivers.genres";
+
         try {
-            resSet = statement.executeQuery(request);
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
+            try {
+                while (rs.next()) {
+                    genres.add(new Genre(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return resSet;
+
+        return genres;
     }
 
+    public HashSet<Subgenre> getSubgenres( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
 
+        HashSet<Subgenre> subgenres = new HashSet<Subgenre>();
+        String            request   = "select * from gbua_mcunivers.subgenres";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
+            try {
+                while (rs.next())
+                    subgenres.add(new Subgenre(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return subgenres;
+    }
+
+    public HashSet<Band> getBands( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
+
+        HashSet<Band> bands   = new HashSet<Band>();
+        String        request = "select * from gbua_mcunivers.bands";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
+            try {
+                while (rs.next())
+                    bands.add(new Band(rs.getInt("id"), rs.getString("name"), rs.getString("history")));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bands;
+    }
+
+    public HashSet<Album> getAlbums( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
+
+        HashSet<Album> albums  = new HashSet<Album>();
+        String         request = "select * from gbua_mcunivers.albums";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
+            try {
+                while (rs.next())
+                    albums.add(new Album(rs.getInt("id"), rs.getString("name"), rs.getInt("year"),
+                            rs.getString("url"), rs.getString("history"), rs.getString("image_path")));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return albums;
+    }
+
+    public HashSet<Article> getArticles( ) {
+        Connection con  = null;
+        Statement  stmt = null;
+        ResultSet  rs   = null;
+
+        HashSet<Article> articles = new HashSet<Article>();
+        String        request  = "select * from gbua_mcunivers.articles";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(request);
+            try {
+                while (rs.next())
+                    articles.add(new Article(rs.getInt("id"), rs.getString("title"), rs.getString("content")));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return articles;
+    }
+
+    public Genre getGenre(int id) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Genre genre = null;
+
+        String request = "select * from gbua_mcunivers.genres where id = ?";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            rs.next();
+            genre = new Genre(rs.getInt("id"), rs.getString("name"), rs.getString("history"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return genre;
+    }
+
+    public Article getArticle(int id) {
+        Connection        con     = null;
+        PreparedStatement stmt    = null;
+        ResultSet         rs      = null;
+        Article           article = null;
+
+        String request = "select * from gbua_mcunivers.articles where id = ?";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            rs.next();
+            article = new Article(rs.getInt("id"), rs.getString("title"), rs.getString("content"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return article;
+    }
+
+    /*UPDATE*/
+
+    public int updateArticle(int id, String title, String content) {
+        Connection con  = null;
+        PreparedStatement  stmt = null;
+        int changed = 0;
+
+        String request = "update gbua_mcunivers.articles set title = ?, content = ? " +
+                "where id = ?";
+
+        changed = update(request, title, content, id, con, stmt, changed);
+
+        return changed > 0 ? 1 : changed;
+    }
+
+    public int updateGenre(int id, String name, String history) {
+        Connection con  = null;
+        PreparedStatement  stmt = null;
+        int changed = 0;
+
+        String request = "update gbua_mcunivers.genres set name = ?, history = ? " +
+                "where id = ?";
+
+        changed = update(request, name, history, id, con, stmt, changed);
+
+        return changed > 0 ? 1 : changed;
+    }
+
+    public int updateSubgenre(int id, int parent, String name, String history) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        int changed = 0;
+
+        String request = "update gbua_mcunivers.subgenres set parent = ?, name = ?, history = ? " +
+                "where id = ?";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setInt(1, parent);
+            stmt.setString(2, name);
+            stmt.setString(3, history);
+            stmt.setInt(4, id);
+            changed = stmt.executeUpdate();
+        } catch (SQLException e) {
+            changed = -1;
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return changed;
+    }
+
+    private int update(String request, String param_1, String param_2, int param_3,
+                        Connection con, PreparedStatement stmt, int changedIn) {
+        int changedOut = changedIn;
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, param_1);
+            stmt.setString(2, param_2);
+            stmt.setInt(3, param_3);
+            changedOut = stmt.executeUpdate();
+        } catch (SQLException e) {
+            changedOut = -1;
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return changedOut;
+    }
+
+    public boolean insertArticle(String title, String content) {
+        Connection con = null;
+//        Statement  stmt = null;
+        PreparedStatement stmt = null;
+        boolean result = false;
+        String request = "insert into gbua_mcunivers.articles (title, content) values"
+                + "(?,?)";
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, title);
+            stmt.setString(2, content);
+//            stmt = con.createStatement();
+            stmt.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
 }
