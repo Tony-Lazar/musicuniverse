@@ -14,7 +14,6 @@ public class UpdateGenre extends HttpServlet{
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String history = req.getParameter("history");
-
         req.setAttribute("response", DB.getDB().updateGenre(id, name, history));
 
         getServletContext().getRequestDispatcher("/jsp/editors/genreEditor.jsp").

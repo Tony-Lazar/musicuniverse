@@ -12,6 +12,7 @@
     <title>Music Universe</title>
     <link rel="stylesheet" href="../../css/main.css">
     <script type="text/javascript" src="../../js/jquery-3.1.0.js"></script>
+    <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
     <script>
         tinymce.init({
             selector: '#mytextarea',
@@ -61,8 +62,8 @@
         <div class="article-editor">
             <form method="post" action="/updateGenre">
                 <input type="hidden" name="id" value="<%=genre.getId()%>">
-                <input type="text" name="title" value="<%=genre.getName()%>">
-                <textarea name="content" id="mytextarea"><%=genre.getHistory()%></textarea>
+                <input type="text" name="name" value="<%=genre.getName()%>">
+                <textarea name="history" id="mytextarea"><%=genre.getHistory()%></textarea>
                 <input type="submit" value="send">
             </form>
         </div>
@@ -76,6 +77,21 @@
         $('.container .navbar').load('/jsp/adminPanel/navbar.jsp .menu');
         showChanged();
     });
+
+    function showChanged() {
+        if (document.changed.changed.value == "1") {
+            document.accepted.style.display = "block";
+            setTimeout(function () {
+                $('#accepted').fadeOut('fast')
+            }, 1000);
+        }
+        else if (document.changed.changed.value == "-1") {
+            document.denied.style.display = "block";
+            setTimeout(function () {
+                $('#denied').fadeOut('fast')
+            }, 1000);
+        }
+    }
 </script>
 </body>
 </html>

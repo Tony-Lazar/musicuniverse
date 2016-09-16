@@ -50,7 +50,7 @@
                 <form action="" method="post">
                     <table>
                         <tr>
-                            <td><input type="submit" value="edit"></td>
+                            <td><input type="submit" value="edit" onclick="form.action='/editGenre'"></td>
                             <td><input type="text" name="id" value="<%=genre.getId()%>" readonly></td>
                             <td><input type="text" name="name" value="<%=genre.getName()%>" readonly></td>
                             <td><input type="text" name="history" value="<%=genre.getHistory()%>" readonly></td>

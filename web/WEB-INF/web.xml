@@ -168,6 +168,16 @@
         <url-pattern>/editArticle</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>editGenre</servlet-name>
+        <servlet-class>com.lanzdev.servlets.redirect.admin.editing.EditGenre</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>editGenre</servlet-name>
+        <url-pattern>/editGenre</url-pattern>
+    </servlet-mapping>
+
     <!--UPDATE-->
 
     <servlet>

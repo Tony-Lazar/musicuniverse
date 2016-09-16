@@ -1,0 +1,22 @@
+.container {
+  padding: 100px;
+}
+.container form.login {
+  border: 1px solid #3C3F41;
+  background: #eaedef;
+  margin: 0 auto;
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.container form.login input,
+.container form.login label {
+  width: 100%;
+  display: block;
+}
+.container form.login input {
+  margin-bottom: 10px;
+}
+.container form.login input[type="submit"] {
+  height: 40px;
+}

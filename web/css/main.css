@@ -164,7 +164,7 @@ body .container .content .article-editor {
   width: 90%;
   margin: 0 auto;
 }
-body .container .content .article-editor form input[name="title"] {
+body .container .content .article-editor form input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   line-height: 40px;
