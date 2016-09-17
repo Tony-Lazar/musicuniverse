@@ -31,7 +31,7 @@
 
     <div class="content">
 
-        <h1>Main Genres</h1>
+        <h2>Main Genres</h2>
 
         <div class="main-col">
             <ul>
@@ -42,7 +42,8 @@
                 %>
                 <li>
                     <form action="/subgenres" method="post">
-                        <input title="<%=genre.getName()%>" type="submit" name="genre" value="<%=genre.getName()%>">
+                        <input type="hidden" name="id" value="<%=genre.getId()%>">
+                        <input title="<%=genre.getName()%>" type="submit" name="name" value="<%=genre.getName()%>">
                     </form>
                 </li>
                 <%

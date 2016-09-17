@@ -1,6 +1,6 @@
 package com.lanzdev.classes.essences;
 
-import com.lanzdev.utils.Converter;
+import com.lanzdev.utils.Utils;
 
 public class Band implements Nameable{
     private int id;
@@ -20,7 +20,7 @@ public class Band implements Nameable{
 
     @Override
     public String getName( ) {
-        return Converter.convertName(name);
+        return Utils.convertName(name);
     }
 
     public String getHistory( ) {

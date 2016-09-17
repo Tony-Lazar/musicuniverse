@@ -133,16 +133,6 @@
     </servlet-mapping>
 
 
-    <servlet>
-        <servlet-name>createArticle</servlet-name>
-        <servlet-class>com.lanzdev.servlets.redirect.admin.creation.CreateArticle</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>createArticle</servlet-name>
-        <url-pattern>/createArticle</url-pattern>
-    </servlet-mapping>
-
     <!--ACTIONS-->
 
     <!--ADDITION-->
@@ -157,25 +147,24 @@
         <url-pattern>/addArticle</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
-        <servlet-name>editArticle</servlet-name>
-        <servlet-class>com.lanzdev.servlets.redirect.admin.editing.EditArticle</servlet-class>
+        <servlet-name>addGenre</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.addition.AddGenre</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>editArticle</servlet-name>
-        <url-pattern>/editArticle</url-pattern>
+        <servlet-name>addGenre</servlet-name>
+        <url-pattern>/addGenre</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>editGenre</servlet-name>
-        <servlet-class>com.lanzdev.servlets.redirect.admin.editing.EditGenre</servlet-class>
+        <servlet-name>addSubgenre</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.addition.AddSubgenre</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>editGenre</servlet-name>
-        <url-pattern>/editGenre</url-pattern>
+        <servlet-name>addSubgenre</servlet-name>
+        <url-pattern>/addSubgenre</url-pattern>
     </servlet-mapping>
 
     <!--UPDATE-->
@@ -190,7 +179,6 @@
         <url-pattern>/updateArticle</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>updateGenre</servlet-name>
         <servlet-class>com.lanzdev.servlets.actions.update.UpdateGenre</servlet-class>
@@ -199,6 +187,17 @@
     <servlet-mapping>
         <servlet-name>updateGenre</servlet-name>
         <url-pattern>/updateGenre</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>updateSubgenre</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.update.UpdateSubgenre</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>updateSubgenre</servlet-name>
+        <url-pattern>/updateSubgenre</url-pattern>
     </servlet-mapping>
 
 </web-app>

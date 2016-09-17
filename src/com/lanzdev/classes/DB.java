@@ -36,20 +36,18 @@ public class DB {
     /*GETTERS*/
 
 
-    public HashSet<Subgenre> getSubgenresByGenre(String genre) {
+    public HashSet<Subgenre> getSubgenresByGenre(int id) {
         Connection        con  = null;
         PreparedStatement stmt = null;
         ResultSet         rs   = null;
 
-        genre = genre.toLowerCase();
         HashSet<Subgenre> genres  = new HashSet<Subgenre>();
-        String            request = "select * from gbua_mcunivers.subgenres where parent = " +
-                "(select id from gbua_mcunivers.genres where name = ?)";
+        String            request = "select * from gbua_mcunivers.subgenres where parent = ?";
 
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
             stmt = con.prepareStatement(request);
-            stmt.setString(1, genre);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
             try {
                 while (rs.next()) {
@@ -83,20 +81,18 @@ public class DB {
 
     }
 
-    public HashSet<Band> getBandsBySubgenre(String subgenre) {
+    public HashSet<Band> getBandsBySubgenre(int id) {
         Connection        con  = null;
         PreparedStatement stmt = null;
         ResultSet         rs   = null;
 
-        subgenre = subgenre.toLowerCase();
         HashSet<Band> bands = new HashSet<Band>();
         String request = "select * from gbua_mcunivers.bands where id in (" +
-                "select band_id from gbua_mcunivers.bands_genres where subgenre_id in(" +
-                "select id from gbua_mcunivers.subgenres where name = ?))";
+                "select band_id from gbua_mcunivers.bands_genres where subgenre_id = ?)";
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
             stmt = con.prepareStatement(request);
-            stmt.setString(1, subgenre);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
             try {
                 while (rs.next()) {
@@ -128,20 +124,19 @@ public class DB {
         return bands;
     }
 
-    public HashSet<Album> getAlbumsByBand(String band) {
+    public HashSet<Album> getAlbumsByBand(int id) {
         Connection        con  = null;
         PreparedStatement stmt = null;
         ResultSet         rs   = null;
 
-        band = band.toLowerCase();
+//        band = band.toLowerCase();
         HashSet<Album> albums = new HashSet<Album>();
-        String request = "select * from gbua_mcunivers.albums where band = (" +
-                "select id from gbua_mcunivers.bands where name = ?)";
+        String request = "select * from gbua_mcunivers.albums where band = ?";
 
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
             stmt = con.prepareStatement(request);
-            stmt.setString(1, band);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
             try {
                 while (rs.next()) {
@@ -583,27 +578,23 @@ public class DB {
     /*UPDATE*/
 
     public int updateArticle(int id, String title, String content) {
-        Connection con  = null;
-        PreparedStatement  stmt = null;
         int changed = 0;
 
         String request = "update gbua_mcunivers.articles set title = ?, content = ? " +
                 "where id = ?";
 
-        changed = update(request, title, content, id, con, stmt, changed);
+        changed = update(request, title, content, id, changed);
 
         return changed > 0 ? 1 : changed;
     }
 
     public int updateGenre(int id, String name, String history) {
-        Connection con  = null;
-        PreparedStatement  stmt = null;
         int changed = 0;
 
         String request = "update gbua_mcunivers.genres set name = ?, history = ? " +
                 "where id = ?";
 
-        changed = update(request, name, history, id, con, stmt, changed);
+        changed = update(request, name, history, id, changed);
 
         return changed > 0 ? 1 : changed;
     }
@@ -644,14 +635,12 @@ public class DB {
     }
 
     public int updateBand(int id, String name, String history) {
-        Connection con = null;
-        PreparedStatement stmt = null;
         int changed = 0;
 
         String request = "update gbua_mcunivers.bands set name = ?, history = ? " +
                 "where id = ?";
 
-        changed = update(request, name, history, id, con, stmt, changed);
+        changed = update(request, name, history, id, changed);
 
         return changed;
     }
@@ -697,8 +686,10 @@ public class DB {
 
 
 
-    private int update(String request, String param_1, String param_2, int param_3,
-                        Connection con, PreparedStatement stmt, int changedIn) {
+    private int update(String request, String param_1, String param_2, int param_3, int changedIn) {
+        Connection con  = null;
+        PreparedStatement  stmt = null;
+
         int changedOut = changedIn;
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
@@ -729,20 +720,39 @@ public class DB {
 
 
     public boolean insertArticle(String title, String content) {
-        Connection con = null;
-//        Statement  stmt = null;
-        PreparedStatement stmt = null;
         boolean result = false;
         String request = "insert into gbua_mcunivers.articles (title, content) values"
                 + "(?,?)";
 
+        result = insert(request, title, content, result);
+
+        return result;
+    }
+
+    public boolean insertGenre(String name, String history) {
+        boolean result = false;
+        String request = "insert into gbua_mcunivers.genres (name, history) values"
+                + "(?,?)";
+
+        result = insert(request, name, history, result);
+
+        return result;
+    }
+
+    public boolean insertSubgenre(int parent, String name, String history) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        boolean result = false;
+
+        String request = "insert into gbua_mcunivers.subgenres (parent, name, history) values" +
+                "(?,?,?)";
+
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-
             stmt = con.prepareStatement(request);
-            stmt.setString(1, title);
-            stmt.setString(2, content);
-//            stmt = con.createStatement();
+            stmt.setInt(1, parent);
+            stmt.setString(2, name);
+            stmt.setString(3, history);
             stmt.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -762,5 +772,37 @@ public class DB {
         }
 
         return result;
+    }
+
+    public boolean insert(String request, String param_1, String param_2, boolean resultIn) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        boolean resultOut = resultIn;
+
+        try {
+            con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            stmt = con.prepareStatement(request);
+            stmt.setString(1, param_1);
+            stmt.setString(2, param_2);
+            stmt.executeUpdate();
+            resultOut = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resultOut = false;
+        } finally {
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (con != null) try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return resultOut;
     }
 }

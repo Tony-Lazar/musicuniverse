@@ -64,10 +64,10 @@ body .container .navbar ul li form input:hover {
 body .container .content {
   text-align: center;
 }
-body .container .content h1 {
+body .container .content h1,
+body .container .content h2 {
   margin: 10px 0;
   text-align: center;
-  text-shadow: 1px 1px 5px #01363b;
 }
 body .container .content .main-col {
   overflow: auto;
@@ -81,8 +81,9 @@ body .container .content .main-col ul li {
   width: auto;
   list-style: none;
   display: inline-block;
+  vertical-align: top;
 }
-body .container .content .main-col ul li:nth-child(n + 5) {
+body .container .content .main-col ul li:nth-child(n + 6) {
   margin-top: 5px;
 }
 body .container .content .main-col ul li form {
@@ -122,7 +123,8 @@ body .container .content .main-col ul.articles-list li form h2 {
 body .container .content .main-col ul.articles-list li form input {
   height: 50px;
 }
-body .container .content .main-col.article {
+body .container .content .article,
+body .container .content .history {
   text-align: justify;
   background: #FDF6E3;
   color: #3C3F41;
@@ -130,9 +132,14 @@ body .container .content .main-col.article {
   width: 90%;
   margin: 20px auto;
   box-shadow: 1px 5px 15px #01363b;
+  font-size: 14px;
 }
-body .container .content .main-col.article h1 {
+body .container .content .article h1,
+body .container .content .history h1 {
   text-shadow: none;
+}
+body .container .content .history {
+  width: 81%;
 }
 body .container .content .response form {
   position: absolute;
@@ -160,11 +167,12 @@ body .container .content .response form#accepted input[type="text"] {
 body .container .content .response form#denied input[type="text"] {
   background: #cf5a57;
 }
-body .container .content .article-editor {
+body .container .content div[class*="-editor"] {
   width: 90%;
   margin: 0 auto;
 }
-body .container .content .article-editor form input[type="text"] {
+body .container .content div[class*="-editor"] form input[type="text"],
+body .container .content div[class*="-editor"] form select {
   width: 100%;
   margin-bottom: 10px;
   line-height: 40px;
@@ -172,7 +180,7 @@ body .container .content .article-editor form input[type="text"] {
   padding: 0 10px;
   text-align: left;
 }
-body .container .content .article-editor form input[type="submit"] {
+body .container .content div[class*="-editor"] form input[type="submit"] {
   margin: 10px auto;
   width: 150px;
   height: 50px;

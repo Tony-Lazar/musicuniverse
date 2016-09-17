@@ -26,7 +26,7 @@
 
         <div class="right-col">
             <div class="main-col table-content">
-                <form action="" method="post" class="header">
+                <form action="/addGenre" method="get" class="header">
                     <table>
                         <tr>
                             <td><input type="submit" value="add new"></td>
@@ -47,10 +47,10 @@
                     HashSet<Genre> genres = db.getGenres();
                     for (Genre genre : genres) {
                 %>
-                <form action="" method="post">
+                <form method="post">
                     <table>
                         <tr>
-                            <td><input type="submit" value="edit" onclick="form.action='/editGenre'"></td>
+                            <td><input type="submit" value="edit" onclick="form.action='/updateGenre'"></td>
                             <td><input type="text" name="id" value="<%=genre.getId()%>" readonly></td>
                             <td><input type="text" name="name" value="<%=genre.getName()%>" readonly></td>
                             <td><input type="text" name="history" value="<%=genre.getHistory()%>" readonly></td>

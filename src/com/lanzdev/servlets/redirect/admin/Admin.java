@@ -11,6 +11,12 @@ public class Admin extends HttpServlet {
     private static final String PASSWORD = "admin";
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/admin.jsp").
+                forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login    = req.getParameter("login");
         String password = req.getParameter("password");

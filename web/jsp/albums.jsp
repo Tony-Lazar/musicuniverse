@@ -1,5 +1,6 @@
 <%@ page import="com.lanzdev.classes.DB" %>
 <%@ page import="com.lanzdev.classes.essences.Album" %>
+<%@ page import="com.lanzdev.classes.essences.Band" %>
 <%@ page import="java.util.HashSet" %>
 <%--
   Created by IntelliJ IDEA.
@@ -22,14 +23,17 @@
     <div class="navbar"></div>
 
     <div class="content">
+        <% DB db = DB.getDB();
+            Band band = db.getBand(Integer.parseInt(request.getParameter("id"))); %>
 
-        <h1>Albums from <%=request.getParameter("band")%></h1>
+        <h2>Albums from <%=band.getName()%>
+        </h2>
 
         <div class="main-col">
             <ul>
                 <%
-                    DB db = DB.getDB();
-                    HashSet<Album> albums = db.getAlbumsByBand(request.getParameter("band"));
+                    HashSet<Album> albums = db.getAlbumsByBand(
+                            Integer.parseInt(request.getParameter("id")));
                     for (Album album : albums) {
                 %>
                 <li>
@@ -46,6 +50,11 @@
                     }
                 %>
             </ul>
+
+            <div class="history">
+                <h2><%="History of " + band.getName()%></h2>
+                <%=band.getHistory()%>
+            </div>
         </div>
     </div>
 

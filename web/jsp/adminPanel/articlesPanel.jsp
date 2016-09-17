@@ -2,7 +2,7 @@
 <%@ page import="com.lanzdev.classes.essences.Article" %>
 <%@ page import="com.lanzdev.classes.essences.Band" %>
 <%@ page import="java.util.HashSet" %>
-<%@ page import="com.lanzdev.utils.Converter" %><%--
+<%@ page import="com.lanzdev.utils.Utils" %><%--
   Created by IntelliJ IDEA.
   User: Tony
   Date: 13.09.2016
@@ -28,7 +28,7 @@
 
         <div class="right-col">
             <div class="main-col table-content">
-                <form action="/createArticle" method="post" class="header">
+                <form action="/addArticle" method="get" class="header">
                     <table>
                         <tr>
                             <td><input type="submit" value="add new"></td>
@@ -52,7 +52,7 @@
                 <form method="post">
                     <table>
                         <tr>
-                            <td><input type="submit" value="edit" onclick="form.action='/editArticle'"></td>
+                            <td><input type="submit" value="edit" onclick="form.action='/updateArticle'"></td>
                             <td><input type="text" name="id" value="<%=article.getId()%>" readonly></td>
                             <td><input type="text" name="title" value="<%=article.getTitle()%>" readonly></td>
                             <td><input type="submit" value="remove" onclick="form.action='SecondServlet'"></td>

@@ -89,10 +89,10 @@ body {
     .content {
       text-align: center;
 
-      h1 {
+      h1, h2 {
         margin: 10px 0;
         text-align: center;
-        text-shadow: 1px 1px 5px @shadow-color;
+        //text-shadow: 1px 1px 5px @shadow-color;
       }
 
       .main-col {
@@ -107,8 +107,9 @@ body {
             width: auto;
             list-style: none;
             display: inline-block;
+            vertical-align: top;
 
-            &:nth-child(n + 5) {
+            &:nth-child(n + 6) {
               margin-top: 5px;
             }
 
@@ -165,20 +166,25 @@ body {
             }
           }
         }
+      }
 
-        &.article {
-          text-align: justify;
-          background: #FDF6E3;
-          color: #3C3F41;
-          padding: 20px;
-          width: 90%;
-          margin: 20px auto;
-          box-shadow: 1px 5px 15px @shadow-color;
+      .article, .history {
+         text-align: justify;
+         background: #FDF6E3;
+         color: #3C3F41;
+         padding: 20px;
+         width: 90%;
+         margin: 20px auto;
+         box-shadow: 1px 5px 15px @shadow-color;
+         font-size: 14px;
 
-          h1 {
-            text-shadow: none;
-          }
-        }
+         h1 {
+           text-shadow: none;
+         }
+       }
+
+      .history {
+        width: 81%;
       }
 
       .response form {
@@ -217,11 +223,12 @@ body {
         }
       }
 
-      .article-editor {
+      div[class*="-editor"] {
         width: 90%;
         margin: 0 auto;
         form {
-          input[type="text"] {
+          input[type="text"],
+          select {
             width: 100%;
             margin-bottom: 10px;
             line-height: 40px;

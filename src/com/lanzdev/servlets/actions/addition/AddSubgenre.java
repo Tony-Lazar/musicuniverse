@@ -8,28 +8,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AddArticle extends HttpServlet {
+public class AddSubgenre extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DB     db      = DB.getDB();
-        String title   = req.getParameter("title");
-        String content = req.getParameter("content");
-        if (db.insertArticle(title, content))
-            getServletContext().getRequestDispatcher("/jsp/adminPanel/articlesPanel.jsp").
+        int    parent  = Integer.parseInt(req.getParameter("parent"));
+        String name    = req.getParameter("name");
+        String history = req.getParameter("history");
+
+        if (db.insertSubgenre(parent, name, history))
+            getServletContext().getRequestDispatcher("/jsp/adminPanel/subgenresPanel.jsp").
                     forward(req, resp);
         else {
             req.setAttribute("response", false);
-            req.setAttribute("title", title);
-            req.setAttribute("content", content);
-            System.out.println(content);
-            getServletContext().getRequestDispatcher("/jsp/creators/articleCreator.jsp").
+            req.setAttribute("parent", parent);
+            req.setAttribute("name", name);
+            req.setAttribute("history", history);
+            System.out.println(history);
+            getServletContext().getRequestDispatcher("/jsp/creators/subgenreCreator.jsp").
                     forward(req, resp);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/jsp/creators/articleCreator.jsp").
+        getServletContext().getRequestDispatcher("/jsp/creators/subgenreCreator.jsp").
                 forward(req, resp);
     }
 }

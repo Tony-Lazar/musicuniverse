@@ -1,6 +1,6 @@
 package com.lanzdev.utils;
 
-public class Converter {
+public class Utils {
 
     // industrial rock --- Industrial Rock
     public static String convertName(String name) {
@@ -14,5 +14,11 @@ public class Converter {
                 result.append(" ");
         }
         return result.toString();
+    }
+
+    public static String isSelectedGenre(int parent, int genreId) {
+        if (parent == genreId)
+            return "selected";
+        return "";
     }
 }

@@ -17,9 +17,7 @@
 <div class="container">
     <%
         DB db = DB.getDB();
-        System.out.println(request.getParameter("id"));
         Article article = db.getArticle(Integer.parseInt(request.getParameter("id")));
-        System.out.println(article.getId());
     %>
 
     <div class="navbar"></div>

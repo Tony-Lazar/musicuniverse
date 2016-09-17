@@ -1,5 +1,5 @@
 <%@ page import="com.lanzdev.classes.DB" %>
-<%@ page import="com.lanzdev.classes.essences.Nameable" %>
+<%@ page import="com.lanzdev.classes.essences.Genre" %>
 <%@ page import="com.lanzdev.classes.essences.Subgenre" %>
 <%@ page import="java.util.HashSet" %>
 <%--
@@ -24,24 +24,35 @@
 
     <div class="content">
 
-        <h1>Subgenres of <%=request.getParameter("genre")%></h1>
+        <% DB db = DB.getDB();
+            Genre genre = db.getGenre(Integer.parseInt(request.getParameter("id"))); %>
+
+
+        <h2>Subgenres of <%=genre.getName()%>
+        </h2>
 
         <div class="main-col">
             <ul>
                 <%
-                    DB db = DB.getDB();
-                    HashSet<Subgenre> genres = db.getSubgenresByGenre(request.getParameter("genre"));
-                    for (Subgenre genre : genres) {
+                    HashSet<Subgenre> subgenres = db.getSubgenresByGenre(Integer.parseInt(request.getParameter("id")));
+                    for (Subgenre subgenre : subgenres) {
                 %>
                 <li>
                     <form action="/bands" method="post">
-                        <input title="<%=genre.getName()%>" type="submit" name="subgenre" value="<%=genre.getName()%>">
+                        <input type="hidden" name="id" value="<%=subgenre.getId()%>">
+                        <input title="<%=subgenre.getName()%>" type="submit" name="name"
+                               value="<%=subgenre.getName()%>">
                     </form>
                 </li>
                 <%
                     }
                 %>
             </ul>
+
+            <div class="history">
+                <h2><%= "History of " + genre.getName() %></h2>
+                <%=genre.getHistory()%>
+            </div>
         </div>
 
     </div>

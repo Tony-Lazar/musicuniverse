@@ -27,15 +27,31 @@
 
         <div class="right-col">
             <div class="main-col table-content">
+                <form action="/addSubgenre" method="get" class="header">
+                    <table>
+                        <tr>
+                            <td><input type="submit" value="add new"></td>
+                            <td><input type="hidden" readonly></td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="by_id">By id</option>
+                                    <option value="by_name">By name</option>
+                                    <option value="by_history">By history</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <br>
                 <%
                     DB db = DB.getDB();
                     HashSet<Subgenre> subgenres = db.getSubgenres();
                     for (Subgenre subgenre : subgenres) {
                 %>
-                <form action="" method="post">
+                <form method="post">
                     <table>
                         <tr>
-                            <td><input type="submit" value="edit"></td>
+                            <td><input type="submit" value="edit" onclick="form.action='/updateSubgenre'"></td>
                             <td><input type="text" name="id" value="<%=subgenre.getId()%>" readonly></td>
                             <td><input type="text" name="name" value="<%=subgenre.getName()%>" readonly></td>
                             <td><input type="text" name="history" value="<%=subgenre.getHistory()%>" readonly></td>

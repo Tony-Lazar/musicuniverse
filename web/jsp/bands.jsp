@@ -1,6 +1,6 @@
 <%@ page import="com.lanzdev.classes.DB" %>
 <%@ page import="com.lanzdev.classes.essences.Band" %>
-<%@ page import="com.lanzdev.classes.essences.Nameable" %>
+<%@ page import="com.lanzdev.classes.essences.Subgenre" %>
 <%@ page import="java.util.HashSet" %><%--
   Created by IntelliJ IDEA.
   User: Tony
@@ -22,25 +22,33 @@
     <div class="navbar"></div>
 
     <div class="content">
+        <% DB db = DB.getDB();
+            Subgenre subgenre = db.getSubgenre(Integer.parseInt(request.getParameter("id")));%>
 
-        <h1>Bands from <%=request.getParameter("subgenre")%></h1>
+        <h2>Bands from <%=subgenre.getName()%>
+        </h2>
 
         <div class="main-col">
             <ul>
                 <%
-                    DB db = DB.getDB();
-                    HashSet<Band> bands = db.getBandsBySubgenre(request.getParameter("subgenre"));
+                    HashSet<Band> bands = db.getBandsBySubgenre(Integer.parseInt(request.getParameter("id")));
                     for (Band band : bands) {
                 %>
                 <li>
                     <form action="/albums" method="post">
-                        <input title="<%=band.getName()%>" type="submit" name="band" value="<%=band.getName()%>">
+                        <input type="hidden" name="id" value="<%=band.getId()%>">
+                        <input title="<%=band.getName()%>" type="submit" name="name" value="<%=band.getName()%>">
                     </form>
                 </li>
                 <%
                     }
                 %>
             </ul>
+            <div class="history">
+                <h2><%= "History of " + subgenre.getName()%></h2>
+                <%=subgenre.getHistory()%>
+            </div>
+
         </div>
     </div>
 

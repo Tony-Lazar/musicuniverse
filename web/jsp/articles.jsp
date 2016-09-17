@@ -25,7 +25,7 @@
 
     <div class="content">
 
-        <h1>Articles</h1>
+        <h2>Articles</h2>
 
         <div class="main-col">
             <ul class="articles-list">

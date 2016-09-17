@@ -1,6 +1,6 @@
 package com.lanzdev.classes.essences;
 
-import com.lanzdev.utils.Converter;
+import com.lanzdev.utils.Utils;
 
 public class Genre implements Nameable{
     private int id;
@@ -20,7 +20,7 @@ public class Genre implements Nameable{
 
     @Override
     public String getName( ) {
-        return Converter.convertName(name);
+        return Utils.convertName(name);
     }
 
     public String getHistory( ) {
