@@ -61,6 +61,16 @@ body .container .navbar ul li form input:hover {
   background: #03d7d5;
   cursor: pointer;
 }
+body .container .navbar ul li form.empty input {
+  width: 150px;
+  height: 50px;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+body .container .navbar ul li form.empty input:hover {
+  cursor: default;
+}
 body .container .content {
   text-align: center;
 }

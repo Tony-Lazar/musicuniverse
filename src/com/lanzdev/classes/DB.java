@@ -685,7 +685,6 @@ public class DB {
     }
 
 
-
     private int update(String request, String param_1, String param_2, int param_3, int changedIn) {
         Connection con  = null;
         PreparedStatement  stmt = null;
@@ -718,25 +717,18 @@ public class DB {
     }
 
 
-
     public boolean insertArticle(String title, String content) {
-        boolean result = false;
         String request = "insert into gbua_mcunivers.articles (title, content) values"
                 + "(?,?)";
 
-        result = insert(request, title, content, result);
-
-        return result;
+        return insert(request, title, content);
     }
 
     public boolean insertGenre(String name, String history) {
-        boolean result = false;
         String request = "insert into gbua_mcunivers.genres (name, history) values"
                 + "(?,?)";
 
-        result = insert(request, name, history, result);
-
-        return result;
+        return insert(request, name, history);
     }
 
     public boolean insertSubgenre(int parent, String name, String history) {
@@ -774,11 +766,17 @@ public class DB {
         return result;
     }
 
-    public boolean insert(String request, String param_1, String param_2, boolean resultIn) {
+    public boolean insertBand(String name, String history) {
+        String request = "insert into gbua_mcunivers.bands (name, history) values" +
+                "(?,?)";
+        return insert(request, name, history);
+    }
+
+    public boolean insert(String request, String param_1, String param_2) {
         Connection con = null;
         PreparedStatement stmt = null;
 
-        boolean resultOut = resultIn;
+        boolean result = false;
 
         try {
             con = DriverManager.getConnection(URL, LOGIN, PASSWORD);
@@ -786,10 +784,10 @@ public class DB {
             stmt.setString(1, param_1);
             stmt.setString(2, param_2);
             stmt.executeUpdate();
-            resultOut = true;
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
-            resultOut = false;
+            result = false;
         } finally {
             if (stmt != null) try {
                 stmt.close();
@@ -803,6 +801,6 @@ public class DB {
             }
         }
 
-        return resultOut;
+        return result;
     }
 }

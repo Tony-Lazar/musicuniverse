@@ -27,6 +27,22 @@
 
         <div class="right-col">
             <div class="main-col table-content">
+                <form action="/addBand" method="get" class="header">
+                    <table>
+                        <tr>
+                            <td><input type="submit" value="add new"></td>
+                            <td><input type="hidden" readonly></td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="by_id">By id</option>
+                                    <option value="by_name">By name</option>
+                                    <option value="by_history">By history</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <br>
                 <%
                     DB db = DB.getDB();
                     HashSet<Band> bands = db.getBands();
@@ -35,7 +51,7 @@
                 <form action="" method="post">
                     <table>
                         <tr>
-                            <td><input type="submit" value="edit"></td>
+                            <td><input type="submit" value="edit" onclick="form.action='/updateBand'"></td>
                             <td><input type="text" name="id" value="<%=band.getId()%>" readonly></td>
                             <td><input type="text" name="name" value="<%=band.getName()%>" readonly></td>
                             <td><input type="text" name="history" value="<%=band.getHistory()%>" readonly></td>

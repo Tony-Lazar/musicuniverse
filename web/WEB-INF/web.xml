@@ -167,6 +167,16 @@
         <url-pattern>/addSubgenre</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>addBand</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.addition.AddBand</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addBand</servlet-name>
+        <url-pattern>/addBand</url-pattern>
+    </servlet-mapping>
+
     <!--UPDATE-->
 
     <servlet>
@@ -189,7 +199,6 @@
         <url-pattern>/updateGenre</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>updateSubgenre</servlet-name>
         <servlet-class>com.lanzdev.servlets.actions.update.UpdateSubgenre</servlet-class>
@@ -198,6 +207,16 @@
     <servlet-mapping>
         <servlet-name>updateSubgenre</servlet-name>
         <url-pattern>/updateSubgenre</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>updateBand</servlet-name>
+        <servlet-class>com.lanzdev.servlets.actions.update.UpdateBand</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>updateBand</servlet-name>
+        <url-pattern>/updateBand</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -32,6 +32,15 @@
                 <input type="submit" value="Home">
             </form>
         </li>
+        <% int left = (5 - ((menuItems.length + 1) % 5));
+            System.out.println(left);
+            for (int i = 0; i < left; i++) { %>
+                <li>
+                    <form class="empty">
+                        <input type="text" readonly>
+                    </form>
+                </li>
+        <% } %>
     </ul>
 </div>
 

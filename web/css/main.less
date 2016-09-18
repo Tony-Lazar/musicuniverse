@@ -81,6 +81,20 @@ body {
                 cursor: pointer;
               }
             }
+
+            &.empty {
+              input {
+                width: @item-width;
+                height: @menu-item-height;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+
+                &:hover {
+                  cursor: default;
+                }
+              }
+            }
           }
         }
       }

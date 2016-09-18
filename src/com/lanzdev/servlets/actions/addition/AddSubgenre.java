@@ -24,7 +24,6 @@ public class AddSubgenre extends HttpServlet {
             req.setAttribute("parent", parent);
             req.setAttribute("name", name);
             req.setAttribute("history", history);
-            System.out.println(history);
             getServletContext().getRequestDispatcher("/jsp/creators/subgenreCreator.jsp").
                     forward(req, resp);
         }

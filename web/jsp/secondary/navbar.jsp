@@ -24,6 +24,15 @@
                 <input type="submit" value="Articles">
             </form>
         </li>
+        <% int left = (5 - (2 % 5));
+            System.out.println(left);
+            for (int i = 0; i < left; i++) { %>
+        <li>
+            <form class="empty">
+                <input type="text" readonly>
+            </form>
+        </li>
+        <% } %>
     </ul>
 </div>
 

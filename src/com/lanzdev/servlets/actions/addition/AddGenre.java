@@ -21,7 +21,6 @@ public class AddGenre extends HttpServlet {
             req.setAttribute("response", false);
             req.setAttribute("name", name);
             req.setAttribute("history", history);
-            System.out.println(history);
             getServletContext().getRequestDispatcher("/jsp/creators/genreCreator.jsp").
                     forward(req, resp);
         }
